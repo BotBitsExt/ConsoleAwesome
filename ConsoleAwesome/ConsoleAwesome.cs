@@ -187,14 +187,10 @@ namespace BotConsole
         [UsedImplicitly]
         public static void Write(ConsoleMessage consoleMessage)
         {
-            if (paused)
-            {
-                Messages.Enqueue(consoleMessage);
-            }
-            else
-            {
-                consoleMessage.Write();
-            }
+            File.AppendAllText("Log.txt", $"[{consoleMessage.Time}]: [{consoleMessage.Type.Humanize(LetterCasing.AllCaps)}]: {consoleMessage.Text}{Environment.NewLine}");
+
+            if (paused) Messages.Enqueue(consoleMessage);
+            else consoleMessage.Write();
         }
 
         /// <summary>
