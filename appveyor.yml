@@ -1,0 +1,17 @@
+version: 1.0.{build}
+
+nuget:
+  disable_publish_on_pr: true
+
+configuration: Release
+
+before_build:
+- nuget restore
+
+build:
+  publish_nuget: true
+
+deploy:
+- provider: NuGet
+  api_key:
+    secure: ZVPHIqaxwXKkZ8euAF18SdCqLNFII5e9xP3Q3X8jbo8sH2nRLC8qcgXHQtU7TRaT
