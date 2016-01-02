@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using BotBits;
 using BotBits.Commands;
@@ -187,14 +188,10 @@ namespace BotConsole
         [UsedImplicitly]
         public static void Write(ConsoleMessage consoleMessage)
         {
-            if (paused)
-            {
-                Messages.Enqueue(consoleMessage);
-            }
-            else
-            {
-                consoleMessage.Write();
-            }
+            File.AppendAllText("Log.txt", $"[{consoleMessage.Time}]: {consoleMessage.Text}{Environment.NewLine}");
+
+            if (paused) Messages.Enqueue(consoleMessage);
+            else consoleMessage.Write();
         }
 
         /// <summary>
@@ -215,6 +212,16 @@ namespace BotConsole
         public static void WriteError(string error)
         {
             Write(error, textColor: ConsoleColor.Red);
+        }
+
+        /// <summary>
+        ///     Writes the error.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        [UsedImplicitly]
+        public static void WriteNotification(string message)
+        {
+            Write(message, textColor: ConsoleColor.DarkCyan);
         }
 
         #endregion

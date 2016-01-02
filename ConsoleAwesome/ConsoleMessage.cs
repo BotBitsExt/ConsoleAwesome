@@ -4,21 +4,21 @@ namespace BotConsole
 {
     public class ConsoleMessage
     {
-        private readonly string text;
-        private readonly ConsoleColor textColor;
-        private readonly DateTime time;
-        private readonly string title;
-        private readonly ConsoleColor titleColor;
+        public readonly DateTime Time;
+        public readonly string Text;
 
-        public ConsoleMessage(string text, string title = "", ConsoleColor textColor = ConsoleColor.Gray,
-            ConsoleColor titleColor = ConsoleColor.White)
+        private readonly ConsoleColor titleColor;
+        private readonly ConsoleColor textColor;
+        private readonly string title;
+        
+        public ConsoleMessage(string text, string title = "", ConsoleColor textColor = ConsoleColor.Gray,ConsoleColor titleColor = ConsoleColor.White)
         {
-            this.text = text;
+            this.Text = text;
             this.title = title;
             this.textColor = textColor;
             this.titleColor = titleColor;
 
-            time = DateTime.Now;
+            Time = DateTime.Now;
         }
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace BotConsole
         /// </summary>
         public void Write()
         {
-            ConsoleAwesome.WriteTime(time);
+            ConsoleAwesome.WriteTime(Time);
 
             if (title != "")
             {
@@ -34,7 +34,7 @@ namespace BotConsole
                 Console.Write(title + " ");
             }
             Console.ForegroundColor = textColor;
-            Console.WriteLine(text);
+            Console.WriteLine(Text);
             Console.ResetColor();
         }
     }
