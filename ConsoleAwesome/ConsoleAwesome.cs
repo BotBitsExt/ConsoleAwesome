@@ -214,6 +214,16 @@ namespace BotConsole
             Write(error, textColor: ConsoleColor.Red);
         }
 
+        /// <summary>
+        ///     Writes the error.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        [UsedImplicitly]
+        public static void WriteNotification(string message)
+        {
+            Write(message, textColor: ConsoleColor.DarkCyan);
+        }
+
         #endregion
 
         /// <summary>
