@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using BotBits;
 using BotBits.Commands;
@@ -187,7 +188,7 @@ namespace BotConsole
         [UsedImplicitly]
         public static void Write(ConsoleMessage consoleMessage)
         {
-            File.AppendAllText("Log.txt", $"[{consoleMessage.Time}]: [{consoleMessage.Type.Humanize(LetterCasing.AllCaps)}]: {consoleMessage.Text}{Environment.NewLine}");
+            File.AppendAllText("Log.txt", $"[{consoleMessage.Time}]: {consoleMessage.Text}{Environment.NewLine}");
 
             if (paused) Messages.Enqueue(consoleMessage);
             else consoleMessage.Write();
