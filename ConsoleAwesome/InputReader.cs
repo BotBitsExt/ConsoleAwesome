@@ -15,8 +15,6 @@ namespace BotConsole
         {
             WriteInput(input);
 
-            Console.CursorVisible = true;
-
             while (true)
             {
                 var key = Console.ReadKey(true);

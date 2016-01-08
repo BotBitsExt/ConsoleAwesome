@@ -43,12 +43,12 @@ namespace BotConsole
         private static Thread writeMessagesThread;
 
         /// <summary>
-        ///     The thread which read input from console.
+        ///     The thread which reads input from console.
         /// </summary>
         private static Thread readInputThread;
 
         /// <summary>
-        ///     Sets the client and initializes <see cref="readInputThread" />.
+        ///     Sets the BotBits client.
         /// </summary>
         /// <param name="c">The client.</param>
         [UsedImplicitly]
@@ -59,13 +59,10 @@ namespace BotConsole
 
             client = c;
             EventLoader.Of(c).LoadStatic<ConsoleAwesome>();
-
-            readInputThread = new Thread(ReadInput);
-            readInputThread.Start();
         }
 
         /// <summary>
-        ///     Initializes <see cref="writeMessagesThread" />.
+        ///     Initializes message printing and input reading threads.
         /// </summary>
         /// <param name="title">The title of console.</param>
         [UsedImplicitly]
@@ -79,6 +76,9 @@ namespace BotConsole
 
             writeMessagesThread = new Thread(WriteMessages);
             writeMessagesThread.Start();
+
+            readInputThread = new Thread(ReadInput);
+            readInputThread.Start();
         }
 
         /// <summary>
@@ -135,9 +135,12 @@ namespace BotConsole
                     return;
 
                 paused = true;
+                Console.CursorVisible = true;
+
                 var input = InputReader.ReadInput(key.KeyChar.ToString());
-                Console.CursorVisible = false;
                 HandleInput(input);
+
+                Console.CursorVisible = false;
                 paused = false;
             }
         }
@@ -158,6 +161,9 @@ namespace BotConsole
                     Console.Clear();
                     return;
             }
+
+            if (client == null)
+                return;
 
             input = input.StartsWith("/") || input.StartsWith("!") ? input.Substring(1) : "say " + input;
             input = input.Trim();
