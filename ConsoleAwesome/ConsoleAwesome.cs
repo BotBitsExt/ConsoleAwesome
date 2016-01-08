@@ -54,6 +54,13 @@ namespace BotConsole
             new Dictionary<string, Action<string>>();
 
         /// <summary>
+        ///     Gets or sets the log file.
+        /// </summary>
+        /// <value>The log file.</value>
+        [UsedImplicitly]
+        public static string LogFile { get; set; }
+
+        /// <summary>
         ///     Sets the BotBits client.
         /// </summary>
         /// <param name="c">The client.</param>
@@ -223,7 +230,10 @@ namespace BotConsole
         [UsedImplicitly]
         public static void Write(ConsoleMessage consoleMessage)
         {
-            File.AppendAllText("Log.txt", $"[{consoleMessage.Time}]: {consoleMessage.Text}{Environment.NewLine}");
+            if (!string.IsNullOrWhiteSpace(LogFile))
+            {
+                File.AppendAllText(LogFile, $"[{consoleMessage.Time}]: {consoleMessage.Text}{Environment.NewLine}");
+            }
 
             if (paused)
             {
