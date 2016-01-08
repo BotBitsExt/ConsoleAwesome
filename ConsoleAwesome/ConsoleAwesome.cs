@@ -240,10 +240,6 @@ namespace BotConsole
             finished = true;
             paused = false;
 
-            // Final read key to allow reading of messages
-            new ConsoleMessage("Press any key to finish.").Write();
-            Console.ReadKey();
-
             writeMessagesThread.Abort();
             readInputThread.Abort();
         }
