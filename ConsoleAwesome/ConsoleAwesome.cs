@@ -67,7 +67,7 @@ namespace BotConsole
         [UsedImplicitly]
         public static void BindClient(BotBitsClient c)
         {
-            if (readInputThread != null)
+            if (client != null)
                 return;
 
             client = c;
