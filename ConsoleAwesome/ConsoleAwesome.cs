@@ -48,6 +48,12 @@ namespace BotConsole
         private static Thread readInputThread;
 
         /// <summary>
+        ///     The custom commands.
+        /// </summary>
+        private static readonly Dictionary<string, Action<string>> CustomCommands =
+            new Dictionary<string, Action<string>>();
+
+        /// <summary>
         ///     Sets the BotBits client.
         /// </summary>
         /// <param name="c">The client.</param>
@@ -79,6 +85,21 @@ namespace BotConsole
 
             readInputThread = new Thread(ReadInput);
             readInputThread.Start();
+        }
+
+        /// <summary>
+        ///     Adds the custom command.
+        /// </summary>
+        /// <param name="command">The command.</param>
+        /// <param name="action">The action.</param>
+        [UsedImplicitly]
+        public static void AddCustomCommand(string command, Action<string> action)
+        {
+            command = command.ToLower();
+            if (CustomCommands.ContainsKey(command))
+                return;
+
+            CustomCommands.Add(command, action);
         }
 
         /// <summary>
@@ -151,22 +172,18 @@ namespace BotConsole
         /// <param name="input">The input.</param>
         private static void HandleInput(string input)
         {
-            input = input.Trim().ToLower();
-
-            switch (input)
+            Action<string> action;
+            if (CustomCommands.TryGetValue(input.Split(' ')[0].ToLower(), out action))
             {
-                case "":
-                    return;
-                case "clear":
-                    Console.Clear();
-                    return;
+                action(input);
+                return;
             }
 
             if (client == null)
                 return;
 
-            input = input.StartsWith("/") || input.StartsWith("!") ? input.Substring(1) : "say " + input;
             input = input.Trim();
+            input = input.StartsWith("/") || input.StartsWith("!") ? input.Substring(1) : "say " + input;
 
             if (input != "")
             {
@@ -174,6 +191,18 @@ namespace BotConsole
                     new ParsedRequest(input))
                     .RaiseIn(client);
             }
+        }
+
+        /// <summary>
+        ///     Shuts down all threads.
+        /// </summary>
+        private static void Exit()
+        {
+            finished = true;
+            paused = false;
+
+            writeMessagesThread.Abort();
+            readInputThread.Abort();
         }
 
         #region Writing
@@ -196,8 +225,14 @@ namespace BotConsole
         {
             File.AppendAllText("Log.txt", $"[{consoleMessage.Time}]: {consoleMessage.Text}{Environment.NewLine}");
 
-            if (paused) Messages.Enqueue(consoleMessage);
-            else consoleMessage.Write();
+            if (paused)
+            {
+                Messages.Enqueue(consoleMessage);
+            }
+            else
+            {
+                consoleMessage.Write();
+            }
         }
 
         /// <summary>
@@ -231,18 +266,6 @@ namespace BotConsole
         }
 
         #endregion
-
-        /// <summary>
-        ///     Shuts down all threads.
-        /// </summary>
-        private static void Exit()
-        {
-            finished = true;
-            paused = false;
-
-            writeMessagesThread.Abort();
-            readInputThread.Abort();
-        }
 
         #region Event Listeners
 

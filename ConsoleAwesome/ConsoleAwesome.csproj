@@ -7,7 +7,7 @@
     <ProjectGuid>{488EDBFD-03C2-4237-BD57-34E1DD0ADD5A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ConsoleAwesome</RootNamespace>
+    <RootNamespace>BotConsole</RootNamespace>
     <AssemblyName>ConsoleAwesome</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
