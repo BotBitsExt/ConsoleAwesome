@@ -103,7 +103,7 @@ namespace BotConsole
         public static void AddCustomCommand(string command, Action<string> action)
         {
             command = command.ToLower();
-            if (CustomCommands.ContainsKey(command))
+            if (CustomCommands.ContainsKey(command) && !command.Contains(" "))
                 return;
 
             CustomCommands.Add(command, action);
