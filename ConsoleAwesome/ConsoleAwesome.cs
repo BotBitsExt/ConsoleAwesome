@@ -56,9 +56,9 @@ namespace BotConsole
         /// <summary>
         ///     Gets or sets the log file.
         /// </summary>
-        /// <value>The log file.</value>
+        /// <value>Enables or disables log file.</value>
         [UsedImplicitly]
-        public static string LogFile { get; set; }
+        public static bool Log { get; set; }
 
         /// <summary>
         ///     Sets the BotBits client.
@@ -230,27 +230,17 @@ namespace BotConsole
         [UsedImplicitly]
         public static void Write(ConsoleMessage consoleMessage)
         {
-            if (!string.IsNullOrWhiteSpace(LogFile))
-            {
-                File.AppendAllText(LogFile, $"[{consoleMessage.Time}]: {consoleMessage.Text}{Environment.NewLine}");
-            }
+            if (Log) File.AppendAllText("LogFile.txt", $"[{consoleMessage.Time}]: {consoleMessage.Title} {consoleMessage.Text} {Environment.NewLine}");
 
-            if (paused)
-            {
-                Messages.Enqueue(consoleMessage);
-            }
-            else
-            {
-                consoleMessage.Write();
-            }
+            if (paused) Messages.Enqueue(consoleMessage);
+            else consoleMessage.Write();
         }
 
         /// <summary>
         ///     Writes the specified text to the console or adds it to the queue.
         /// </summary>
         [UsedImplicitly]
-        public static void Write(string text, string title = "", ConsoleColor textColor = ConsoleColor.Gray,
-            ConsoleColor titleColor = ConsoleColor.White)
+        public static void Write(string text, string title = "", ConsoleColor textColor = ConsoleColor.Gray, ConsoleColor titleColor = ConsoleColor.White)
         {
             Write(new ConsoleMessage(text, title, textColor, titleColor));
         }
@@ -288,13 +278,13 @@ namespace BotConsole
         [EventListener]
         private static void On(LeaveEvent e)
         {
-            Write(e.Player.Username, "[-]", titleColor: ConsoleColor.Red);
+            Write(e.Player.Username, "[-]",  titleColor: ConsoleColor.Red);
         }
 
         [EventListener]
         private static void On(ChatEvent e)
         {
-            Write(e.Text, e.Player.ChatName + ":");
+            Write(e.Text, e.Player.ChatName + ":", e.Player);
         }
 
         [EventListener]

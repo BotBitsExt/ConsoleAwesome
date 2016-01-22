@@ -1,20 +1,21 @@
 using System;
+using BotBits;
 
 namespace BotConsole
 {
     public class ConsoleMessage
     {
         public readonly DateTime Time;
+        public readonly string Title;
         public readonly string Text;
 
         private readonly ConsoleColor titleColor;
         private readonly ConsoleColor textColor;
-        private readonly string title;
-        
-        public ConsoleMessage(string text, string title = "", ConsoleColor textColor = ConsoleColor.Gray,ConsoleColor titleColor = ConsoleColor.White)
+
+        public ConsoleMessage(string text, string title = "", ConsoleColor textColor = ConsoleColor.Gray, ConsoleColor titleColor = ConsoleColor.White)
         {
-            this.Text = text;
-            this.title = title;
+            Text = text;
+            Title = title;
             this.textColor = textColor;
             this.titleColor = titleColor;
 
@@ -28,10 +29,10 @@ namespace BotConsole
         {
             ConsoleAwesome.WriteTime(Time);
 
-            if (title != "")
+            if (Title != "")
             {
                 Console.ForegroundColor = titleColor;
-                Console.Write(title + " ");
+                Console.Write(Title + " ");
             }
             Console.ForegroundColor = textColor;
             Console.WriteLine(Text);
