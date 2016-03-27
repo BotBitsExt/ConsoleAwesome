@@ -67,8 +67,7 @@ namespace BotConsole
         [UsedImplicitly]
         public static void BindClient(BotBitsClient c)
         {
-            if (client != null)
-                return;
+            if (client != null) return;
 
             client = c;
             EventLoader.Of(c).LoadStatic<ConsoleAwesome>();
@@ -103,8 +102,7 @@ namespace BotConsole
         public static void AddCustomCommand(string command, Action<string> action)
         {
             command = command.ToLower();
-            if (CustomCommands.ContainsKey(command) && !command.Contains(" "))
-                return;
+            if (CustomCommands.ContainsKey(command) && !command.Contains(" ")) return;
 
             CustomCommands.Add(command, action);
         }
@@ -126,8 +124,7 @@ namespace BotConsole
                 {
                     while (Messages.Count > 0)
                     {
-                        if (paused)
-                            break;
+                        if (paused) break;
 
                         Messages.Dequeue().Write();
                     }
@@ -135,8 +132,8 @@ namespace BotConsole
                 else
                 {
                     var time = DateTime.Now;
-                    if (lastTime.ToString("HH:mm:ss") != time.ToString("HH:mm:ss"))
-                        WriteTime(time);
+                    if (lastTime.ToString("HH:mm:ss") != time.ToString("HH:mm:ss")) WriteTime(time);
+
                     lastTime = time;
                 }
 
@@ -159,8 +156,7 @@ namespace BotConsole
 
                 var key = Console.ReadKey(true);
 
-                if (finished)
-                    return;
+                if (finished) return;
 
                 paused = true;
                 Console.CursorVisible = true;
@@ -185,9 +181,7 @@ namespace BotConsole
                 action(input);
                 return;
             }
-
-            if (client == null)
-                return;
+            if (client == null) return;
 
             input = input.Trim();
             input = input.StartsWith("/") || input.StartsWith("!") ? input.Substring(1) : "say " + input;
@@ -278,13 +272,13 @@ namespace BotConsole
         [EventListener]
         private static void On(LeaveEvent e)
         {
-            Write(e.Player.Username, "[-]",  titleColor: ConsoleColor.Red);
+            Write(e.Player.Username, "[-]", titleColor: ConsoleColor.Red);
         }
 
         [EventListener]
         private static void On(ChatEvent e)
         {
-            Write(e.Text, e.Player.ChatName + ":", e.Player);
+            Write(e.Text, e.Player.ChatName + ":", titleColor: e.Player.Friend ? ConsoleColor.Green : ConsoleColor.White);
         }
 
         [EventListener]
