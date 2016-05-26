@@ -9,7 +9,6 @@ using JetBrains.Annotations;
 
 namespace BotConsole
 {
-    [UsedImplicitly]
     public class ConsoleAwesome
     {
         /// <summary>
@@ -57,14 +56,12 @@ namespace BotConsole
         ///     Gets or sets the log file.
         /// </summary>
         /// <value>Enables or disables log file.</value>
-        [UsedImplicitly]
         public static bool Log { get; set; }
 
         /// <summary>
         ///     Sets the BotBits client.
         /// </summary>
         /// <param name="c">The client.</param>
-        [UsedImplicitly]
         public static void BindClient(BotBitsClient c)
         {
             if (client != null) return;
@@ -77,7 +74,6 @@ namespace BotConsole
         ///     Initializes message printing and input reading threads.
         /// </summary>
         /// <param name="title">The title of console.</param>
-        [UsedImplicitly]
         public static void Initialize(string title)
         {
             if (writeMessagesThread != null)
@@ -98,7 +94,6 @@ namespace BotConsole
         /// </summary>
         /// <param name="command">The command.</param>
         /// <param name="action">The action.</param>
-        [UsedImplicitly]
         public static void AddCustomCommand(string command, Action<string> action)
         {
             command = command.ToLower();
@@ -220,8 +215,7 @@ namespace BotConsole
             Console.Write(time.ToString("[HH:mm:ss] "));
             Console.ResetColor();
         }
-
-        [UsedImplicitly]
+        
         public static void Write(ConsoleMessage consoleMessage)
         {
             if (Log) File.AppendAllText("LogFile.txt", $"[{consoleMessage.Time}]: {consoleMessage.Title} {consoleMessage.Text} {Environment.NewLine}");
@@ -233,7 +227,6 @@ namespace BotConsole
         /// <summary>
         ///     Writes the specified text to the console or adds it to the queue.
         /// </summary>
-        [UsedImplicitly]
         public static void Write(string text, string title = "", ConsoleColor textColor = ConsoleColor.Gray, ConsoleColor titleColor = ConsoleColor.White)
         {
             Write(new ConsoleMessage(text, title, textColor, titleColor));
@@ -243,7 +236,6 @@ namespace BotConsole
         ///     Writes the error.
         /// </summary>
         /// <param name="error">The error.</param>
-        [UsedImplicitly]
         public static void WriteError(string error)
         {
             Write(error, textColor: ConsoleColor.Red);
@@ -253,7 +245,6 @@ namespace BotConsole
         ///     Writes the error.
         /// </summary>
         /// <param name="message">The message.</param>
-        [UsedImplicitly]
         public static void WriteNotification(string message)
         {
             Write(message, textColor: ConsoleColor.DarkCyan);
