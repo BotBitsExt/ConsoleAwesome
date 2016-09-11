@@ -5,7 +5,6 @@ using System.Threading;
 using BotBits;
 using BotBits.Commands;
 using BotBits.Events;
-using JetBrains.Annotations;
 
 namespace BotConsole
 {
@@ -227,7 +226,7 @@ namespace BotConsole
         /// <summary>
         ///     Writes the specified text to the console or adds it to the queue.
         /// </summary>
-        public static void Write(string text, string title = "", ConsoleColor textColor = ConsoleColor.Gray, ConsoleColor titleColor = ConsoleColor.White)
+        public static void Write(object text, string title = "", ConsoleColor textColor = ConsoleColor.Gray, ConsoleColor titleColor = ConsoleColor.White)
         {
             Write(new ConsoleMessage(text, title, textColor, titleColor));
         }
@@ -236,7 +235,7 @@ namespace BotConsole
         ///     Writes the error.
         /// </summary>
         /// <param name="error">The error.</param>
-        public static void WriteError(string error)
+        public static void WriteError(object error)
         {
             Write(error, textColor: ConsoleColor.Red);
         }
@@ -245,7 +244,7 @@ namespace BotConsole
         ///     Writes the error.
         /// </summary>
         /// <param name="message">The message.</param>
-        public static void WriteNotification(string message)
+        public static void WriteNotification(object message)
         {
             Write(message, textColor: ConsoleColor.DarkCyan);
         }
