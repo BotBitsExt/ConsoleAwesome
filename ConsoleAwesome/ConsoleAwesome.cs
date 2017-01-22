@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using BotBits;
+﻿using System.Collections.Generic;
 using BotBits.Commands;
+using System.Threading;
 using BotBits.Events;
-using JetBrains.Annotations;
+using System.Linq;
+using System.IO;
+using BotBits;
+using System;
 
 namespace BotConsole
 {
@@ -35,6 +35,11 @@ namespace BotConsole
         ///     The client used to execute commands.
         /// </summary>
         private static BotBitsClient client;
+
+        /// <summary>
+        ///     The messages the bot will ignore when written by the Server.
+        /// </summary>
+        public static WriteEventMessages[] IgnoreWriteMessages = new WriteEventMessages[0];
 
         /// <summary>
         ///     The thread which writes time and delayed messages from queue to console.
@@ -87,6 +92,19 @@ namespace BotConsole
 
             readInputThread = new Thread(ReadInput);
             readInputThread.Start();
+        }
+
+        /// <summary>
+        ///     Adds the event messages to the list.
+        /// </summary>
+        /// <param name="eventMessage">The messages to ignore</param>
+        public static void IgnoreMessages(params WriteEventMessages[] eventMessage)
+        {
+            IgnoreWriteMessages = new WriteEventMessages[eventMessage.Length];
+            for (int i = 0; i < eventMessage.Length; i++)
+            {
+                IgnoreWriteMessages[i] = eventMessage[i];
+            }
         }
 
         /// <summary>
@@ -189,6 +207,92 @@ namespace BotConsole
             }
         }
 
+		//TODO: Improve this
+        private static bool ContainsIgnoreMessages(string title, string text)
+        {
+            if (IgnoreWriteMessages.Contains(WriteEventMessages.SystemMessage))
+            {
+                if (title.StartsWith("* system"))
+                {
+                    return true;
+                }
+            }
+            else if (IgnoreWriteMessages.Contains(WriteEventMessages.ChangeTeamMessage))
+            {
+                if (text.Contains("team of") || text.EndsWith("already has the specified team."))
+                {
+                    return true;
+                }
+            }
+            else if (IgnoreWriteMessages.Contains(WriteEventMessages.EditMessage))
+            {
+                if (text.EndsWith("edit this world."))
+                {
+                    return true;
+                }
+            }
+            else if (IgnoreWriteMessages.Contains(WriteEventMessages.GodModeMessage))
+            {
+                if (text.EndsWith("use god mode."))
+                {
+                    return true;
+                }
+            }
+            else if (IgnoreWriteMessages.Contains(WriteEventMessages.ChangeEffectMessage))
+            {
+                if (title.Contains("system"))
+                {
+                    if (text.Contains("effect") && !text.Contains("kicked"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (IgnoreWriteMessages.Contains(WriteEventMessages.KickMessage))
+            {
+                if (title.Contains("system"))
+                {
+                    if (text.StartsWith($"{Players.Of(client).OwnPlayer.Username.ToLower()} kicked"))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (IgnoreWriteMessages.Contains(WriteEventMessages.MuteMessage))
+            {
+                if (title.Contains("system"))
+                {
+                    if (text.Contains("is now") && text.EndsWith("muted."))
+                    {
+                        return true;
+                    }
+                }
+            }
+            else if (IgnoreWriteMessages.Contains(WriteEventMessages.PmMessage))
+            {
+                if (title.Contains("you") && (title.Contains("<") || title.Contains(">")))
+                {
+                    return true;
+                }
+            }
+            else if (IgnoreWriteMessages.Contains(WriteEventMessages.WorldMessage))
+            {
+                if (title.StartsWith("* world"))
+                {
+                    return true;
+                }
+            }
+            else if (IgnoreWriteMessages.Contains(WriteEventMessages.MagicMessage))
+            {
+                if (title.StartsWith("* magic"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         ///     Shuts down all threads.
         /// </summary>
@@ -215,7 +319,7 @@ namespace BotConsole
             Console.Write(time.ToString("[HH:mm:ss] "));
             Console.ResetColor();
         }
-        
+
         public static void Write(ConsoleMessage consoleMessage)
         {
             if (Log) File.AppendAllText("LogFile.txt", $"[{consoleMessage.Time}]: {consoleMessage.Title} {consoleMessage.Text} {Environment.NewLine}");
@@ -275,8 +379,14 @@ namespace BotConsole
         [EventListener]
         private static void On(WriteEvent e)
         {
-            Write(e.Text, e.Title + ":");
+            var text = e.Text.ToLower();
+            var title = e.Title.ToLower();
+            if (!ContainsIgnoreMessages(title, text))
+            {
+                Write(e.Text, e.Title + ":");
+            }
         }
+
 
         [EventListener]
         private static void On(InfoEvent e)
@@ -303,5 +413,19 @@ namespace BotConsole
         }
 
         #endregion
+    }
+
+    public enum WriteEventMessages
+    {
+        ChangeEffectMessage,
+        ChangeTeamMessage,
+        GodModeMessage,
+        SystemMessage,
+        WorldMessage,
+        MagicMessage,
+        KickMessage,
+        EditMessage,
+        MuteMessage,
+        PmMessage
     }
 }
