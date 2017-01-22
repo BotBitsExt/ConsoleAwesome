@@ -1,5 +1,4 @@
 using System;
-using BotBits;
 
 namespace BotConsole
 {
@@ -34,6 +33,7 @@ namespace BotConsole
                 Console.ForegroundColor = titleColor;
                 Console.Write(Title + " ");
             }
+
             Console.ForegroundColor = textColor;
             Console.WriteLine(Text);
             Console.ResetColor();
