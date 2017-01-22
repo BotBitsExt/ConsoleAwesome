@@ -324,7 +324,10 @@ namespace BotConsole
         {
             if (Log) File.AppendAllText("LogFile.txt", $"[{consoleMessage.Time}]: {consoleMessage.Title} {consoleMessage.Text} {Environment.NewLine}");
 
-            if (paused) Messages.Enqueue(consoleMessage);
+            if (paused)
+            {
+                Messages.Enqueue(consoleMessage);
+            }
             else consoleMessage.Write();
         }
 
