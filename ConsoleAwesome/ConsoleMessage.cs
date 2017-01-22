@@ -6,12 +6,12 @@ namespace BotConsole
     {
         public readonly DateTime Time;
         public readonly string Title;
-        public readonly string Text;
+        public readonly object Text;
 
         private readonly ConsoleColor titleColor;
         private readonly ConsoleColor textColor;
 
-        public ConsoleMessage(string text, string title = "", ConsoleColor textColor = ConsoleColor.Gray, ConsoleColor titleColor = ConsoleColor.White)
+        public ConsoleMessage(object text, string title = "", ConsoleColor textColor = ConsoleColor.Gray, ConsoleColor titleColor = ConsoleColor.White)
         {
             Text = text;
             Title = title;
