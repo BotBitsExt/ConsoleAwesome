@@ -32,8 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BotBits, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\BotBits.218.0.3\lib\net40\BotBits.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\BotBits.220.2.1\lib\net40\BotBits.dll</HintPath>
     </Reference>
     <Reference Include="BotBits.Commands, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\BotBits.Commands.2.0.1\lib\net40\BotBits.Commands.dll</HintPath>
