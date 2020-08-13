@@ -1,6 +1,6 @@
 # ConsoleAwesome ![Version](https://img.shields.io/nuget/v/ConsoleAwesome.svg?label=version) [![Build status](https://ci.appveyor.com/api/projects/status/1hxfce410715c2fl?svg=true)](https://ci.appveyor.com/project/Tunous/consoleawesome)
 
-ConsoleAwesome provieds easy access to execution of BotBits commands from the command line and displays various EverybodyEdits messages received through BotBits in an easy to read way.
+ConsoleAwesome provides easy access to execution of BotBits commands from the command line and displays various EverybodyEdits messages received through BotBits in an easy to read way.
 
 Thanks to BBMP and EEJesse who allowed me to modify and improve their implementation of this idea.
 
