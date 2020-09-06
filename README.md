@@ -2,7 +2,7 @@
 
 ConsoleAwesome provides easy access to execution of BotBits commands from the command line and displays various EverybodyEdits messages received through BotBits in an easy to read way.
 
-Thanks to BBMP and EEJesse who allowed me to modify and improve their implementation of this idea.
+Thanks to Koya and EEJesse who allowed me to modify and improve their implementation of this idea.
 
 # Installation
 
